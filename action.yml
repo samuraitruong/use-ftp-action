@@ -1,7 +1,7 @@
 name: 'use-ftp-action'
 description: 'An ftp client ac tion to sync data between ci & remote ftp server'
 inputs:
-  FTP_USERNAME:
+  FTP_USER:
     description: 'username to access ftp server'
     required: true
   FTP_PASSWORD:
@@ -20,8 +20,10 @@ inputs:
     description: 'Local folder name'
     required: false
     default: '.'
+  SYNC_MODE:
+    description: 'Local folder name'
+    required: false
+    default: 'download'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.FTP_USERNAME }}
