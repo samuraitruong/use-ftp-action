@@ -18,7 +18,7 @@ INPUT_SYNC_MODE="${INPUT_SYNC_MODE:-download}"
 
 # Sync or upload based on SYNC_MODE
 if [ "$INPUT_SYNC_MODE" = "download" ]; then
-    lftp -e "mirror --parallel=20 --overwrite -c $INPUT_FTP_ROOT_FOLDER $INPUT_LOCAL_FOLDER;quit" -u "$INPUT_FTP_USER","$INPUT_FTP_PASSWORD" "$INPUT_FTP_HOST"
+    lftp -e "mirror --parallel=20 --overwrite --only-newer $INPUT_FTP_ROOT_FOLDER $INPUT_LOCAL_FOLDER;quit" -u "$INPUT_FTP_USER","$INPUT_FTP_PASSWORD" "$INPUT_FTP_HOST"
     # lftp -u "$INPUT_FTP_USER","$INPUT_FTP_PASSWORD" "$INPUT_FTP_HOST" -e "mirror --verbose --continue --reverse $INPUT_FTP_ROOT_FOLDER $INPUT_LOCAL_FOLDER; exit"
 elif [ "$INPUT_SYNC_MODE" = "upload" ]; then
     lftp -u "$INPUT_FTP_USER","$INPUT_FTP_PASSWORD" "$INPUT_FTP_HOST" -e "mirror --verbose --continue $INPUT_LOCAL_FOLDER $INPUT_FTP_ROOT_FOLDER; exit"
