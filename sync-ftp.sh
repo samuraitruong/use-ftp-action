@@ -16,6 +16,20 @@ INPUT_FTP_ROOT_FOLDER="${INPUT_FTP_ROOT_FOLDER:-.}"
 INPUT_LOCAL_FOLDER="${INPUT_LOCAL_FOLDER:-.}"
 INPUT_SYNC_MODE="${INPUT_SYNC_MODE:-download}"
 
+# Configure lftp SSL settings to handle weak DH keys and SSL issues
+export LFTP_SSL_ALLOW_UNKNOWN_CERTS=1
+export LFTP_SSL_FORCE=no
+
+# Create lftp configuration to handle SSL issues
+cat > ~/.lftprc << EOF
+set ssl:verify-certificate false
+set ssl:check-hostname false
+set ftp:ssl-allow no
+set ftp:ssl-force no
+set ftp:ssl-protect-data false
+set ssl-allow false
+EOF
+
 # Sync or upload based on SYNC_MODE
 if [ "$INPUT_SYNC_MODE" = "download" ]; then
     lftp -e "mirror --parallel=20 --overwrite --only-newer $INPUT_FTP_ROOT_FOLDER $INPUT_LOCAL_FOLDER;quit" -u "$INPUT_FTP_USER","$INPUT_FTP_PASSWORD" "$INPUT_FTP_HOST"
